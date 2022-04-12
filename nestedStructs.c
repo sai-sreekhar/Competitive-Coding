@@ -52,6 +52,7 @@ int main()
     char findNameOfRegNo[MAX_LEN];
     scanf("%s", findNameOfRegNo);
 
+    printf("Entered %d records in format: regno, name, internal(c1,c2),external(fat,viva):\n",noOfStudents);
     readData(studentsArr, noOfStudents);
     displayData(studentsArr, noOfStudents);
     displayAvgInternalExternalMarks(studentsArr, noOfStudents);
