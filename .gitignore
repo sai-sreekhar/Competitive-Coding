@@ -1,2 +1,4 @@
 *.out
 .vscode
+in.txt
+out.txt
