@@ -1,1 +1,1 @@
-# Competitive-Coding-Ubuntu
+# Competitive Coding
