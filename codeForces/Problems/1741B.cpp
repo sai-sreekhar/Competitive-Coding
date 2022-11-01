@@ -54,7 +54,29 @@ int main()
     cin >> t;
     while (t--)
     {
-        
+        // 1 2 3 4 5 6 --> 4 5 6 3 2 1
+        //  1 2 3 4 5 6 7 8 --> 5 6 7 8 4 3 2 1
+        // 1 2 3 4 5--> 3 4 5 1 2
+
+        int n;
+        cin >> n;
+
+        if (n == 3)
+        {
+            cout << -1 << "\n";
+            continue;
+        }
+
+        for (int i = n / 2 + 1; i <= n; i++)
+        {
+            cout << i << " ";
+        }
+        for (int i = 1; i <= n / 2; i++)
+        {
+            cout << i << " ";
+        }
+
+        cout << "\n";
     }
     return 0;
 }
