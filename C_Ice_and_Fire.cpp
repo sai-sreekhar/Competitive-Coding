@@ -26,7 +26,7 @@ void calcCountOfWinningPlayers()
             cout << outputRes << " ";
         }
     }
-    cout << "\n";   
+    cout << "\n";
     return;
 }
 
