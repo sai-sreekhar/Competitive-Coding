@@ -40,7 +40,9 @@ void printTrace(int line, const char *fileName, const char *msg, ...)
 
 void solve()
 {
-    
+    int n;
+    cin >> n;
+    cout << n-1 << "\n";
 }
 
 int main()

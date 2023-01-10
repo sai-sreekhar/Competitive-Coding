@@ -1,64 +1,107 @@
+/*
+    Author: Sai Sreekar
+    Test Case Description:
+    First line contains an integer T (between 1 and 150) which stands for the number of testcases.
+    Each TestCase has 2 lines.
+    First Line of each testcase contains an integer n (1 <= n <= 100)
+    Second Line of each testcase contains n space separated positive integers (1 <= a[i] <= 1000)
+*/
+
+/*
+    Logic:
+    Sparse Table
+    Sample Input:
+    3
+    5
+    1 2 3 4 5
+    7
+    4 7 8 3 2 1 9
+    10
+    6 3 1 8 2 6 9 23 12 5
+    Sample Output:
+    1 1 1
+    2 2 2
+    3 3
+    4 4
+    5
+    4 4 3
+    7 7 2
+    8 3 1
+    3 2 1
+    2 1
+    1 1
+    9
+    6 3 1 1 
+    3 1 1 1 
+    1 1 1 1 
+    8 2 2 
+    2 2 2 
+    6 6 6 
+    9 9 5 
+    23 12 
+    12 5 
+    5 
+*/
+
 #include <bits/stdc++.h>
-
 using namespace std;
+#define MAX 10000
 
-#define lli long long int
-#define ONLINE_JUDGE
-#define DEBUG_CODE
+int sparseTable[10000][10000];
 
-#ifdef DEBUG_CODE
-#define TRACE(msg, ...) printTrace(__LINE__, __FILE__, msg, __VA_ARGS__)
-#define PRINT_ARRAY(arr, n, type) myPrint<type>(arr, n)
-#else
-#define TRACE(msg, ...)
-#define PRINT_ARRAY(arr, n, type)
-#endif
-
-template <typename T1>
-void myPrint(T1 *arr, int n)
+void buildSparseTable(int *arr, int n)
 {
-    cout << "myPrint Function output is: ";
     for (int i = 0; i < n; i++)
     {
-        cout << arr[i] << " ";
+        sparseTable[i][0] = arr[i];
     }
-    cout << "\n";
-}
 
-void printTrace(int line, const char *fileName, const char *msg, ...)
-{
-    va_list args;
-    char buffer[1024 + 2] = {0};
-    snprintf(buffer, sizeof(buffer), "%s(%d) : ", fileName, line);
-    int stringLength = strnlen(buffer, 1024);
-    int remainingBufferSize = 1024 - stringLength;
-    va_start(args, msg);
-    vsnprintf(buffer + stringLength, remainingBufferSize, msg, args);
-    va_end(args);
-    cout << buffer << "\n"
-         << flush;
-}
-
-void solve()
-{
+    for (int j = 1; (1 << j) <= n; j++)
+    {
+        for (int i = 0; (i + (1 << j) - 1) < n; i++)
+        {
+            if (sparseTable[i][j - 1] <
+                sparseTable[i + (1 << (j - 1))][j - 1])
+            {
+                sparseTable[i][j] = sparseTable[i][j - 1];
+            }
+            else
+            {
+                sparseTable[i][j] =
+                    sparseTable[i + (1 << (j - 1))][j - 1];
+            }
+        }
+    }
 }
 
 int main()
 {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    cout.tie(NULL);
-
-#ifndef ONLINE_JUDGE
-    freopen("in.txt", "r", stdin);
-    freopen("out.txt", "w", stdout);
-#endif
-
     int t;
     cin >> t;
     while (t--)
     {
-        solve();
+        int n;
+        cin >> n;
+        int arr[n];
+        for (int i = 0; i < n; i++)
+        {
+            cin >> arr[i];
+        }
+
+        memset(sparseTable, -1, sizeof(sparseTable));
+        buildSparseTable(arr, n);
+
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                if (sparseTable[i][j] != -1)
+                {
+                    cout << sparseTable[i][j] << " ";
+                }
+            }
+            cout << "\n";
+        }
     }
     return 0;
 }

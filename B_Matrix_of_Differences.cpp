@@ -15,7 +15,7 @@ using namespace std;
 #endif
 
 template <typename T1>
-void myPrint(T1 *arr,int n)
+void myPrint(T1 *arr, int n)
 {
     cout << "myPrint Function output is: ";
     for (int i = 0; i < n; i++)
@@ -35,12 +35,65 @@ void printTrace(int line, const char *fileName, const char *msg, ...)
     va_start(args, msg);
     vsnprintf(buffer + stringLength, remainingBufferSize, msg, args);
     va_end(args);
-    cout << buffer << "\n" << flush;
+    cout << buffer << "\n"
+         << flush;
 }
 
 void solve()
 {
+    int n;
+    cin >> n;
+
+    int top = 1;
+    int bottom = n * n;
+    int res[n][n];
+
+    for (int i = 0; i < n; i++)
+    {
+        if (i % 2 == 0)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                if (j % 2 == 0)
+                {
+                    res[i][j] = top;
+                    top++;
+                }
+                else
+                {
+                    res[i][j] = bottom;
+                    bottom--;
+                }
+            }
+        }
+        else
+        {
+            for (int j = n - 1; j >= 0; j--)
+            {
+                if (j % 2 == 0)
+                {
+                    res[i][j] = bottom;
+                    bottom--;
+                }
+                else
+                {
+                    res[i][j] = top;
+                    top++;
+                }
+            }
+        }
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            cout << res[i][j] << " ";
+        }
+        cout << "\n";
+    }
     
+    return;
 }
 
 int main()
@@ -56,7 +109,7 @@ int main()
 
     int t;
     cin >> t;
-    while(t--)
+    while (t--)
     {
         solve();
     }
