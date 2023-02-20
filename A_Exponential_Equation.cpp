@@ -41,26 +41,16 @@ void printTrace(int line, const char *fileName, const char *msg, ...)
 
 void solve()
 {
-    int n;
+    ll n;
     cin >> n;
-    int arr[n];
-    stack<int> st;
-    unordered_map<int, int> ump;
-    for (int i = 0; i < n; i++)
+    if (n % 2 == 0)
     {
-        cin >> arr[i];
-        ump[arr[i]]++;
+        cout << 1 << " " << n / 2 << "\n";
     }
-
-    int oneFreq = ump[1];
-
-    if (oneFreq % 2 != 0)
+    else
     {
-        cout << oneFreq / 2 + n - oneFreq + 1 << "\n";
-        return;
+        cout << -1 << "\n";
     }
-
-    cout << oneFreq / 2 + n - oneFreq << "\n";
 }
 
 int main()

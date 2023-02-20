@@ -39,28 +39,63 @@ void printTrace(int line, const char *fileName, const char *msg, ...)
          << flush;
 }
 
+ll fillMap(map<ll, ll> &mp, ll n)
+{
+    ll k = n;
+    ll maxi = 1;
+
+    for (ll i = 2; i * i <= n; i++)
+    {
+        if (k % i == 0)
+        {
+            ll temp = 0;
+            while (k % i == 0)
+            {
+                temp++;
+                k /= i;
+            }
+
+            mp[i] = temp;
+            maxi = max(maxi, temp);
+        }
+    }
+
+    if (k != 1)
+    {
+        mp[k] = 1;
+    }
+    return maxi;
+}
+
 void solve()
 {
-    int n;
+    ll n;
     cin >> n;
-    int arr[n];
-    stack<int> st;
-    unordered_map<int, int> ump;
-    for (int i = 0; i < n; i++)
+    map<ll, ll> mp;
+
+    ll maxi = fillMap(mp, n);
+
+    ll ans = 0;
+    // for(auto itr = mp.begin(); itr != mp.end(); itr++)
+    // {
+    //     cout << itr->first << " " << itr->second << "\n";
+    // }
+    // cout << maxi << "\n";
+    for (ll i = 0; i < maxi; i++)
     {
-        cin >> arr[i];
-        ump[arr[i]]++;
+        ll cur = 1;
+        for (auto itr = mp.begin(); itr != mp.end(); itr++)
+        {
+            if (itr->second > 0)
+            {
+                mp[itr->first] -= 1;
+                cur *= itr->first;
+            }
+        }
+        ans += cur;
     }
 
-    int oneFreq = ump[1];
-
-    if (oneFreq % 2 != 0)
-    {
-        cout << oneFreq / 2 + n - oneFreq + 1 << "\n";
-        return;
-    }
-
-    cout << oneFreq / 2 + n - oneFreq << "\n";
+    cout << ans << "\n";
 }
 
 int main()

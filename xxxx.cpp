@@ -42,115 +42,63 @@ using namespace std;
 
 void getBalancedString()
 {
-
     int n;
     cin >> n;
-
-    int result = INT_MAX;
-    int idx = -1;
-    int freqMap[MAX_CHAR] = {};
-    string str;
-    priority_queue<pair<int, int>> priorityQueue;
-    int hashMapArray[MAX_CHAR] = {};
-
+    string s;
+    cin >> s;
+    vector<vector<int>> at(26);
     for (int i = 0; i < n; i++)
     {
-        char charInput;
-        cin >> charInput;
-        str += charInput;
-        freqMap[(int)(charInput - 'a')]++;
+        at[(int)(s[i] - 'a')].push_back(i);
     }
-
-    for (int i = 0; i < MAX_CHAR; i++)
+    vector<int> order(26);
+    iota(order.begin(), order.end(), 0);
+    sort(order.begin(), order.end(), [&](int i, int j)
+         { return at[i].size() > at[j].size(); });
+    string res = "";
+    int best = -1;
+    for (int cnt = 1; cnt <= 26; cnt++)
     {
-        int count = i + 1;
-
-        if (n % count != 0)
+        if (n % cnt == 0)
         {
-            continue;
-        }
-
-        int z = n / count;
-
-        priority_queue<int> priorityQueue;
-        for (int i = 0; i < MAX_CHAR; i++)
-        {
-            priorityQueue.push(freqMap[i]);
-        }
-
-        int pos = 0;
-        while (count--)
-        {
-            int charArray = priorityQueue.top();
-            priorityQueue.pop();
-            pos += max(0, z - charArray);
-        }
-
-        if (result > pos)
-        {
-            result = pos;
-            idx = i + 1;
-        }
-    }
-
-    for (int i = 0; i < MAX_CHAR; i++)
-    {
-        priorityQueue.push(make_pair(freqMap[i], i));
-        hashMapArray[i] = INT_MAX;
-    }
-
-    int z = n / idx;
-
-    while (idx--)
-    {
-        int pqSecond = priorityQueue.top().second;
-        int pqFirst = priorityQueue.top().first;
-        priorityQueue.pop();
-        hashMapArray[pqSecond] = pqFirst - z;
-    }
-
-    char charArray[n];
-    for (int i = 0; i < n; i++)
-    {
-        int pqSecond = (int)(str[i] - 'a');
-        if (hashMapArray[pqSecond] == INT_MAX)
-        {
-            for (int j = 0; j < MAX_CHAR; j++)
+            int cur = 0;
+            for (int i = 0; i < cnt; i++)
             {
-                if (hashMapArray[j] < 0)
+                cur += min(n / cnt, (int)at[order[i]].size());
+            }
+            if (cur > best)
+            {
+                best = cur;
+                res = string(n, ' ');
+                vector<char> extra;
+                for (int it = 0; it < cnt; it++)
                 {
-                    hashMapArray[j]++;
-                    charArray[i] = char(j + (int)('a'));
-                    break;
+                    int i = order[it];
+                    for (int j = 0; j < n / cnt; j++)
+                    {
+                        if (j < (int)at[i].size())
+                        {
+                            res[at[i][j]] = (char)('a' + i);
+                        }
+                        else
+                        {
+                            extra.push_back((char)('a' + i));
+                        }
+                    }
+                }
+                for (char &c : res)
+                {
+                    if (c == ' ')
+                    {
+                        c = extra.back();
+                        extra.pop_back();
+                    }
                 }
             }
         }
-        else if (hashMapArray[pqSecond] > 0)
-        {
-            hashMapArray[pqSecond]--;
-            for (int j = 0; j < MAX_CHAR; j++)
-            {
-                if (hashMapArray[j] < 0)
-                {
-                    hashMapArray[j]++;
-                    charArray[i] = char(j + (int)('a'));
-                    break;
-                }
-            }
-        }
-        else
-        {
-            charArray[i] = char(pqSecond + (int)('a'));
-        }
     }
-
-    // cout << result << "\n";
-    for (int i = 0; i < n; i++)
-    {
-        cout << charArray[i];
-    }
-
-    cout << "\n";
+    cout << n - best << '\n';
+    cout << res << '\n';
 }
 
 int main()

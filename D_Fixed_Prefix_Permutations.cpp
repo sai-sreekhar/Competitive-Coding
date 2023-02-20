@@ -37,23 +37,23 @@ struct TrieNode *getNode()
 
 void insert(struct TrieNode *root, vector<int> word)
 {
-    // Start at the root node
+    
     struct TrieNode *node = root;
 
-    // For each character in the word
+    
     for (int i = 0; i < word.size(); i++)
     {
-        // If the character doesn't exist in the trie, add it
+        
         if (!node->children[word[i]])
         {
             node->children[word[i]] = getNode();
         }
 
-        // Move to the next node
+        
         node = node->children[word[i]];
     }
 
-    // Mark the final node as the end of a word
+    
     node->isEndOfWord = true;
 }
 
@@ -109,7 +109,7 @@ void getMinSteps()
     vector<vector<int>> vec1(n, vector<int>(m));
     vector<vector<int>> vec2;
 
-    // Read the first matrix from the input stream and store it in the vector vec1.
+    
     for (int i = 0; i < n; i++)
     {
         for (int j = 0; j < m; j++)
@@ -122,20 +122,20 @@ void getMinSteps()
 
     for (int i = 0; i < n; i++)
     {
-        // Create a temporary vector of size m
+        
         vector<int> tempVec(m);
 
-        // Iterate over each element of the current vector of vec1
+        
         for (int j = 0; j < m; j++)
         {
-            // Get the value at index j of the current vector of vec1
+            
             int idx = vec1[i][j];
 
-            // Store the value of j at index idx in the temporary vector
+            
             tempVec[idx] = j;
         }
 
-        // Store the temporary vector to vec2
+        
         vec2.push_back(tempVec);
     }
 
