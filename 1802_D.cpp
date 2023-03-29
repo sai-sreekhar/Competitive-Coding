@@ -1,7 +1,7 @@
 /*
     Author: Sai Sreekar
-    Created: 2023/02/12 16:34:23
-    Last Modified: 2023/02/25 10:29:18
+    Created: 2023/03/09 16:10:41
+    Last Modified: 2023/03/09 17:21:42
 */
 
 #include <bits/stdc++.h>
@@ -22,6 +22,14 @@ typedef pair <ll, ll> pll;
 #else
 #define debug(x...)
 #endif
+
+#define cd2 res = min(res, abs(*curr - vec[i].first));\
+                if (curr != mySet.begin())\
+                {\
+                    curr--;\
+                    res = min(res, abs(*curr - vec[i].first));\
+                }
+
 
 void __print(int x) {cerr << x;}
 void __print(long x) {cerr << x;}
@@ -56,7 +64,14 @@ void _print(priority_queue<Params...> q)
     cerr << "]" << endl;
 }
 
-//Operator Overloads
+#define cd1 if (i != n - 1)\
+        {\
+            res = min(res, abs(maxi - vec[i].first));\
+        }
+#define cd3 curr--;\
+                res = min(res, abs(*curr - vec[i].first));
+
+//Operator Overloads   
 template<typename T1, typename T2>
 istream& operator>>(istream &istream, pair<T1, T2> &p) { return (istream >> p.first >> p.second); }
 template<typename T>
@@ -66,11 +81,59 @@ ostream& operator<<(ostream &ostream, const pair<T1, T2> &p) { return (ostream <
 template<typename T>
 ostream& operator<<(ostream &ostream, const vector<T> &c) { for (auto &it : c) cout << it << " "; return ostream; }
 
-void solve()
+
+ll logic(vll temp,vpll vec,ll n)
 {
-    int n;
-    cin >> n;
+    set<ll> mySet;
+    ll res = INT_MAX;
+    for (ll i = 0; i < n; i++)
+    {
+        ll maxi = temp[i + 1];
+        cd1;
+
+        if (!mySet.empty() && maxi < vec[i].first)
+        {
+            auto curr = mySet.upper_bound(vec[i].first);
+            if (curr != mySet.end())
+            {
+                cd2;
+            }
+            else
+            {
+                cd3;
+            }
+        }
+        
+        mySet.insert(vec[i].second);
+    }
     
+    return res;
+}
+
+bool isPrime()
+{
+        
+}
+void func(vll &temp, ll n, vpll vec)
+{
+    for (ll i = n - 2; i >= 0; i--)
+    {
+        temp[i] = max(temp[i + 1], vec[i].second);
+    }
+    return;
+}
+
+void solve()
+{ 
+    ll n;
+    cin >> n;
+    vpll vec(n);
+    cin >> vec;
+    sort(vec.begin(),vec.end());
+    vll temp(n + 1, -1);
+    temp[n - 1] = vec[n - 1].second;
+    func(temp, n,vec);    
+    cout << logic(temp,vec,n) << "\n";
 }
 
 int main()
@@ -79,10 +142,11 @@ int main()
     cin.tie(NULL);
     cout.tie(NULL);
 
-    //#ifndef ONLINE_JUDGE
-    //freopen("in.txt","r", stdin);
-    //freopen("out.txt", "w", stdout);
-    //#endif
+    #ifndef ONLINE_JUDGE
+    freopen("in.txt","r", stdin);
+    freopen("out.txt", "w", stdout);
+    freopen("err.txt","w",stderr);
+    #endif
 
     int t = 1;
     cin >> t;
@@ -98,4 +162,5 @@ int main()
     cerr << "\nTime Taken: " << (float)clock() / CLOCKS_PER_SEC << " sec"<< "\n";
 #endif
 
+    return 0;
 }

@@ -1,7 +1,7 @@
 /*
     Author: Sai Sreekar
-    Created: 2023/02/12 16:34:23
-    Last Modified: 2023/02/25 10:29:18
+    Created: 
+    Last Modified: 
 */
 
 #include <bits/stdc++.h>
@@ -22,6 +22,11 @@ typedef pair <ll, ll> pll;
 #else
 #define debug(x...)
 #endif
+
+#define loop1 for(ll j = 0; j < 10; j++)\
+        {\
+            t <<= 1;\
+        }
 
 void __print(int x) {cerr << x;}
 void __print(long x) {cerr << x;}
@@ -56,6 +61,12 @@ void _print(priority_queue<Params...> q)
     cerr << "]" << endl;
 }
 
+#define loop2         for(ll k = 0; k < m ;k++)\
+        {\
+            cout << k+1+t << " ";\
+        }
+
+
 //Operator Overloads
 template<typename T1, typename T2>
 istream& operator>>(istream &istream, pair<T1, T2> &p) { return (istream >> p.first >> p.second); }
@@ -66,11 +77,25 @@ ostream& operator<<(ostream &ostream, const pair<T1, T2> &p) { return (ostream <
 template<typename T>
 ostream& operator<<(ostream &ostream, const vector<T> &c) { for (auto &it : c) cout << it << " "; return ostream; }
 
+void display(ll n, ll m)
+{
+    ll temp = 1;
+    for(int i = 0; i < n; i++)
+    {
+        ll t = temp;
+        loop1;
+        loop2;
+        temp++;
+        cout << "\n";
+    }
+    return;
+}
 void solve()
 {
-    int n;
-    cin >> n;
-    
+    ll n,m;
+    cin>> n >> m;
+    cout << n * m << "\n";
+    display(n,m);
 }
 
 int main()
@@ -79,10 +104,10 @@ int main()
     cin.tie(NULL);
     cout.tie(NULL);
 
-    //#ifndef ONLINE_JUDGE
-    //freopen("in.txt","r", stdin);
-    //freopen("out.txt", "w", stdout);
-    //#endif
+    #ifndef ONLINE_JUDGE
+    freopen("in.txt","r", stdin);
+    freopen("out.txt", "w", stdout);
+    #endif
 
     int t = 1;
     cin >> t;
@@ -98,4 +123,5 @@ int main()
     cerr << "\nTime Taken: " << (float)clock() / CLOCKS_PER_SEC << " sec"<< "\n";
 #endif
 
+    return 0;
 }

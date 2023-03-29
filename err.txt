@@ -1,5 +1,6 @@
 
 Test Case #1:
-[grid] = [{{1,0,0},{0,0,0},{0,0,0}}]
 
-Time Taken: 0.001501 sec
+Test Case #2:
+
+Time Taken: 0.002017 sec

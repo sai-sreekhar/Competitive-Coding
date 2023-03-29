@@ -1,7 +1,7 @@
 /*
     Author: Sai Sreekar
-    Created: 2023/02/12 16:34:23
-    Last Modified: 2023/02/25 10:29:18
+    Created: 2023/02/25 10:52:00
+    Last Modified: 2023/02/25 11:55:14
 */
 
 #include <bits/stdc++.h>
@@ -17,6 +17,7 @@ typedef vector <pair <ll, ll> > vpll;
 typedef pair <ll, ll> pll;
 
 //Debug Utils
+#define ONLINE_JUDGE
 #ifndef ONLINE_JUDGE
 #define debug(x...) cerr << "[" << #x << "] = ["; _print(x)
 #else
@@ -66,11 +67,20 @@ ostream& operator<<(ostream &ostream, const pair<T1, T2> &p) { return (ostream <
 template<typename T>
 ostream& operator<<(ostream &ostream, const vector<T> &c) { for (auto &it : c) cout << it << " "; return ostream; }
 
+
 void solve()
 {
+    int x, y;
+    cin >> x >> y;
     int n;
-    cin >> n;
-    
+    if(x < y)
+    {
+        cout << x << "\n";
+    }
+    else
+    {
+        cout << y << "\n";
+    }
 }
 
 int main()
@@ -98,4 +108,5 @@ int main()
     cerr << "\nTime Taken: " << (float)clock() / CLOCKS_PER_SEC << " sec"<< "\n";
 #endif
 
+    return 0;
 }

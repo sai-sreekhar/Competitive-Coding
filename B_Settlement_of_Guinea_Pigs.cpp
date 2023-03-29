@@ -1,7 +1,7 @@
 /*
     Author: Sai Sreekar
-    Created: 2023/02/12 16:34:23
-    Last Modified: 2023/02/25 10:29:18
+    Created: 2023/03/09 15:28:10
+    Last Modified: 2023/03/22 19:28:20
 */
 
 #include <bits/stdc++.h>
@@ -68,9 +68,32 @@ ostream& operator<<(ostream &ostream, const vector<T> &c) { for (auto &it : c) c
 
 void solve()
 {
-    int n;
+    ll n;
     cin >> n;
-    
+    ll res = 0;
+    ll temp = 0;
+    ll total = 0;
+    ll a;
+    for(ll i = 0; i < n; i++)
+    {
+        cin >> a;
+        if(a == 2)
+        {
+            if(total > 1)
+            {
+                temp = (total -2)/2+2;
+                res = max(temp,res);
+            }   
+        }
+        else
+        {
+            total ++;
+            temp++;
+            res = max(res,temp);
+        }
+    }
+    cout<<res<<"\n";
+
 }
 
 int main()
@@ -79,10 +102,11 @@ int main()
     cin.tie(NULL);
     cout.tie(NULL);
 
-    //#ifndef ONLINE_JUDGE
-    //freopen("in.txt","r", stdin);
-    //freopen("out.txt", "w", stdout);
-    //#endif
+    #ifndef ONLINE_JUDGE
+    freopen("in.txt","r", stdin);
+    freopen("out.txt", "w", stdout);
+    freopen("err.txt", "w", stderr);
+    #endif
 
     int t = 1;
     cin >> t;
@@ -98,4 +122,5 @@ int main()
     cerr << "\nTime Taken: " << (float)clock() / CLOCKS_PER_SEC << " sec"<< "\n";
 #endif
 
+    return 0;
 }

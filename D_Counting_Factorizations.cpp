@@ -1,7 +1,7 @@
 /*
     Author: Sai Sreekar
-    Created: 2023/02/12 16:34:23
-    Last Modified: 2023/02/25 10:29:18
+    Created: 2023/03/04 22:54:37
+    Last Modified: 2023/03/04 23:45:44
 */
 
 #include <bits/stdc++.h>
@@ -68,8 +68,6 @@ ostream& operator<<(ostream &ostream, const vector<T> &c) { for (auto &it : c) c
 
 void solve()
 {
-    int n;
-    cin >> n;
     
 }
 
@@ -98,4 +96,5 @@ int main()
     cerr << "\nTime Taken: " << (float)clock() / CLOCKS_PER_SEC << " sec"<< "\n";
 #endif
 
+    return 0;
 }
