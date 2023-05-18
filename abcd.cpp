@@ -102,22 +102,26 @@ ostream &operator<<(ostream &ostream, const vector<T> &c)
 }
 
 #include <iostream>
+#include <vector>
+#include <climits>
 #include <stack>
-#include <stdlib.h>
+#include <algorithm>
 using namespace std;
 
 struct point
 {
-    int x, y;
+    int x;
+    int y;
 } p0;
-point nextToTop(stack<point> &S)
+point nextToTop(stack<point> &stack)
 {
-    point p = S.top();
-    S.pop();
-    point res = S.top();
-    S.push(p);
-    return res;
+    point top = stack.top();
+    stack.pop();
+    point nttop = stack.top();
+    stack.push(top);
+    return nttop;
 }
+
 void swap(point &p1, point &p2)
 {
     point temp = p1;
@@ -133,73 +137,85 @@ int distSq(point p1, point p2)
 
 int ccw(point a, point b, point c)
 {
-    int val = (b.y - a.y) * (c.x - b.x) -
-              (b.x - a.x) * (c.y - b.y);
+    int area = (b.y - a.y) * (c.x - b.x) -
+               (b.x - a.x) * (c.y - b.y);
 
-    if (val == 0)
+    if (area == 0)
         return 0;
-    return (val > 0) ? 1 : 2;
+    return (area > 0) ? 1 : 2;
 }
+
 int comparator(const void *vp1, const void *vp2)
 {
     point *p1 = (point *)vp1;
     point *p2 = (point *)vp2;
-
-    // Find ccw
     int o = ccw(p0, *p1, *p2);
     if (o == 0)
-        return (distSq(p0, *p2) >= distSq(p0, *p1)) ? -1 : 1;
-
-    return (o == 2) ? -1 : 1;
+    {
+        return (distSq(p0, *p2) >= distSq(p0, *p1)) ? -1 : 1; // if collinear, we sort if p2 is smaller than p1s
+    }
+    return (o == 2) ? -1 : 1; // Sort if its c-clockwise
 }
 
-void convexHull(point points[], int n)
+bool compare(point &p1, point &p2)
 {
+    int o = ccw(p0, p1, p2);
+    if (o == 0)
+    {
+        return (distSq(p0, p2) >= distSq(p0, p1)); // if collinear, we sort if p2 is smaller than p1s
+    }
+    return (o == 2); // Sort if its c-clockwise
+}
+
+void convex_hull(vector<point> &points)
+{
+
+    int n = points.size();
     for (int i = 0; i < n; i++)
     {
         cout << points[i].x << " " << points[i].y << "\n";
     }
-    int ymin = points[0].y, min = 0;
+    int ymin = points[0].y;
+    int min = 0;
     for (int i = 1; i < n; i++)
     {
         int y = points[i].y;
-        if ((y < ymin) || (ymin == y &&
-                           points[i].x < points[min].x))
-            ymin = points[i].y, min = i;
+        if ((y < ymin) || (ymin == y && points[i].x < points[min].x))
+        {
+            ymin = y;
+            min = i;
+        }
     }
 
     swap(points[0], points[min]);
-
     p0 = points[0];
-    qsort(&points[1], n - 1, sizeof(point), comparator);
-    // for(int i = 0; i < n; i++)
-    // {
-    //     cout << points[i].x << " " << points[i].y << endl;
-    // }
+    sort(next(points.begin()), points.end(), compare);
 
+    // qsort(&points[1], n - 1, sizeof(point), comparator);
+    // for (int i = 0; i < n; i++)
+    // {
+    //     cout << points[i].x << " " << points[i].y << "\n";
+    // }
+    // sort(points.begin(), points.end(), comparator);
     int m = 1;
     for (int i = 1; i < n; i++)
     {
-        while (i < n - 1 && ccw(p0, points[i],
-                                points[i + 1]) == 0)
+        while (i < n - 1 && ccw(p0, points[i], points[i + 1]) == 0)
             i++;
-
         points[m] = points[i];
         m++;
     }
-
-    if (m < 3)
-        return;
-
     stack<point> S;
     S.push(points[0]);
     S.push(points[1]);
     S.push(points[2]);
-
     for (int i = 3; i < m; i++)
     {
+
         while (S.size() > 1 && ccw(nextToTop(S), S.top(), points[i]) != 2)
+        {
             S.pop();
+        }
         S.push(points[i]);
     }
 
@@ -210,12 +226,65 @@ void convexHull(point points[], int n)
         S.pop();
     }
 }
-
-// Driver program to test above functions
 int main()
 {
-    point points[] = {{-7, 8}, {-4, 6}, {2, 6}, {6, 4}, {8, 6},{7, -2}, {4, -6}, {8, -7}, {0, 0}, {3, -2}, {6, -10}, {0, -6}, {-9, -5}, {-8, -2}, {-8, 0}, {-10, 3}, {-2, 2}, {-10, 4}};
-    int n = sizeof(points) / sizeof(points[0]);
-    convexHull(points, n);
+
+    vector<point> points(18);
+
+    points[0].x = -7;
+    points[0].y = 8;
+
+    points[1].x = -4;
+    points[1].y = 6;
+
+    points[2].x = 2;
+    points[2].y = 6;
+
+    points[3].x = 6;
+    points[3].y = 4;
+
+    points[4].x = 8;
+    points[4].y = 6;
+
+    points[5].x = 7;
+    points[5].y = -2;
+
+    points[6].x = 4;
+    points[6].y = -6;
+
+    points[7].x = 8;
+    points[7].y = -7;
+
+    points[8].x = 0;
+    points[8].y = 0;
+
+    points[9].x = 3;
+    points[9].y = -2;
+
+    points[10].x = 6;
+    points[10].y = -10;
+
+    points[11].x = 0;
+    points[11].y = -6;
+
+    points[12].x = -9;
+    points[12].y = -5;
+
+    points[13].x = -8;
+    points[13].y = -2;
+
+    points[14].x = -8;
+    points[14].y = 0;
+
+    points[15].x = -10;
+    points[15].y = 3;
+
+    points[16].x = -2;
+    points[16].y = 2;
+
+    points[17].x = -10;
+    points[17].y = 4;
+
+    convex_hull(points);
     return 0;
 }
